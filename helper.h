@@ -74,26 +74,23 @@ typedef struct Vertex {
 } Vertex;
 
 typedef struct UniformBufferObject {
-    alignas(16) glm::mat4 M;
+    alignas(16) glm::mat4 AtmosModel;
     alignas(16) glm::mat4 MVP;
 
-    alignas(16) glm::vec3 viewPos;   // Position of the viewer
-    alignas(16) glm::vec3  sunPos;    // Position of the sun, light direction
+    alignas(16) glm::vec3 viewPos;
+    alignas(16) glm::vec3  sunPos;
 
-    // Number of samples along the view ray and light ray
     alignas(4) int viewSamples;
     alignas(4) int lightSamples;
 
-    alignas(4) float I_sun;    // Intensity of the sun
-    alignas(4) float R_e;      // Radius of the planet [m]
-    alignas(4) float R_a;      // Radius of the atmosphere [m]
-    alignas(16) glm::vec3  beta_R;   // Rayleigh scattering coefficient
-    alignas(4) float beta_M;   // Mie scattering coefficient
-    // alignas(4) float absorb_M;
-    alignas(4) float H_R;      // Rayleigh scale height
-    alignas(4) float H_M;      // Mie scale height
-    alignas(4) float g;        // Mie scattering direction - 
-    //  - anisotropy of the medium
+    alignas(16) glm::vec3 sunIntensity;
+    alignas(4) float planetRadius;
+    alignas(4) float atmosphereRadius;
+    alignas(16) glm::vec3  scatterRayleigh;
+    alignas(4) float scatterMie;
+    alignas(4) float hDensityRayleigh;
+    alignas(4) float hDensityMie;
+    alignas(4) float g;
 
-    alignas(4) float toneMappingFactor;    ///< Whether tone mapping is applied
+    alignas(4) float toneMappingFactor;
 } UniformBufferObject;

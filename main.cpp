@@ -123,7 +123,7 @@ private:
             glfwPollEvents();
             drawFrame();
             processInput();
-            UpdateSun(deltaTime);
+            // UpdateSun(deltaTime);
         }
 
         vkDeviceWaitIdle(vulkanController->device);
@@ -301,15 +301,15 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 void UpdateSun(float delta)
 {
-    sun.sunAngle = glm::mod(sun.sunAngle + 0.5 * delta, 3.1415926 + glm::radians(20.f));
+    sun.sunAngle = glm::mod(sun.sunAngle + 0.025 * delta, 3.1415926 + glm::radians(20.f));
     sun.sunDir.y = glm::sin(sun.sunAngle);
     sun.sunDir.z = -glm::cos(sun.sunAngle);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    // if (enableMouseCallback)
-    //     UpdateSun(static_cast<float>(yoffset));
+    if (enableMouseCallback)
+        UpdateSun(static_cast<float>(yoffset));
 }
 
 

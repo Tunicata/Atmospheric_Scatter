@@ -675,7 +675,7 @@ void VulkanControl::createCamera(Camera* rawCamera) {
 }
 
 void VulkanControl::CreateSun(Sun* rawSun) {
-    rawSun->I_sun = glm::vec3(20.f);
+    rawSun->sunIntensity = glm::vec3(20.f);
     rawSun->sunAngle = glm::radians(45.f);
     rawSun->sunDir = glm::vec3(0.0f, 1.0f, 1.0f);
     
@@ -809,7 +809,7 @@ void VulkanControl::updateUniformBuffer(uint32_t currentImage) {
     glm::mat4 m_modelAtmos = glm::scale(glm::mat4(1.0f), glm::vec3(6420., 6420., 6420.));
     glm::mat4 m_modelEarth = glm::scale(glm::mat4(1.0f), glm::vec3(6360., 6360., 6360.));
 
-    ubo.M = m_modelAtmos;
+    ubo.AtmosModel = m_modelAtmos;
     glm::mat4 lookat = glm::lookAt(camera->pos, camera->view + camera->pos, camera->up);
     glm::mat4 proj = glm::perspective(camera->fov, swapChainExtent.width / (float)swapChainExtent.height, camera->near, camera->far);
 
@@ -822,14 +822,14 @@ void VulkanControl::updateUniformBuffer(uint32_t currentImage) {
     ubo.viewSamples = 16;
     ubo.lightSamples = 8;
 
-    ubo.I_sun = 20.f;
-    ubo.R_e = 6360.;
-    ubo.R_a = 6420.;
-    ubo.beta_R = glm::vec3(5.8e-3f, 13.5e-3f, 33.1e-3f);
-    ubo.beta_M = 21e-3f;
+    ubo.sunIntensity = glm::vec3(20.f);
+    ubo.planetRadius = 6360.;
+    ubo.atmosphereRadius = 6420.;
+    ubo.scatterRayleigh = glm::vec3(5.8e-3f, 13.5e-3f, 33.1e-3f);
+    ubo.scatterMie = 21e-3f;
     // ubo.absorb_M = 4.4e-3f;
-    ubo.H_R = 7.994f;
-    ubo.H_M = 1.200f;
+    ubo.hDensityRayleigh = 7.994f;
+    ubo.hDensityMie = 1.200f;
     ubo.g = 0.888f;
 
     ubo.toneMappingFactor = 1.0;

@@ -7,34 +7,31 @@ layout(location = 2) in vec2 texCoord;
 layout(location = 0) out vec3 fsPosition;
 
 layout(binding = 0) uniform UniformBufferObject {
-    mat4 M;     // Model matrix
-    mat4 MVP;   // Model - View - Projection matrix
+    mat4 AtmosModel;        // Atmosphere Model matrix
+    mat4 MVP;               // Model View Projection matrix
 
-// TODO other constants
-    vec3 viewPos;   // Position of the viewer
-    vec3 sunPos;    // Position of the sun, light direction
+    vec3 viewPos;           // Position of the viewer
+    vec3 sunPos;            // Position of the sun, light direction
 
-// Number of samples along the view ray and light ray
-    int viewSamples;
-    int lightSamples;
+    int viewSamples;        // view Ray (view -> sample point) Sample
+    int lightSamples;       // light Ray (sample point) Sample
 
-    float I_sun;    // Intensity of the sun
-    float R_e;      // Radius of the planet [m]
-    float R_a;      // Radius of the atmosphere [m]
-    vec3  beta_R;   // Rayleigh scattering coefficient
-    float beta_M;   // Mie scattering coefficient
-//    float absorb_M;
-    float H_R;      // Rayleigh scale height
-    float H_M;      // Mie scale height
-    float g;        // Mie scattering direction - 
-//  - anisotropy of the medium
+    vec3 sunIntensity;     // Intensity of the sun
+    float planetRadius;     // Radius of the planet [m]
+    float atmosphereRadius; // Radius of the atmosphere [m]
+    vec3  scatterRayleigh;  // Rayleigh scattering coefficient
+    float scatterMie;       // Mie scattering coefficient
 
-    float toneMappingFactor;    ///< Whether tone mapping is applied
+    float hDensityRayleigh; // Rayleigh scale height
+    float hDensityMie;      // Mie scale height
+    float g;                // Mie scattering direction - Mie Asymmetry Coefficient
+
+    float toneMappingFactor;
 } ubo;
 
 void main()
 {
     vec4 posVec4 = vec4(position, 1.0);
-    fsPosition = vec3(ubo.M * posVec4);
+    fsPosition = vec3(ubo.AtmosModel * posVec4);
 	gl_Position = ubo.MVP * posVec4;
 }
